@@ -15,21 +15,21 @@ const InsightGlobe = () => {
       const video = videoRef.current;
       const section = sectionRef.current;
       if (!video || !section) return;
-
+  
       video.pause();
 
       let lastScrollY = window.scrollY;
       let ticking = false;
       let lastTimestamp = performance.now();
       let scrollTimeout;
-
+  
       const handleScroll = () => {
         if (!ticking) {
           requestAnimationFrame((timestamp) => {
-            const rect = section.getBoundingClientRect();
-            const windowHeight = window.innerHeight;
-            const sectionHeight = rect.height;
-
+        const rect = section.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+        const sectionHeight = rect.height;
+  
             // Only play if section is in view
             if (
               rect.top < windowHeight &&
@@ -59,7 +59,7 @@ const InsightGlobe = () => {
           ticking = true;
         }
       };
-
+  
       window.addEventListener("scroll", handleScroll, { passive: true });
       return () => {
         window.removeEventListener("scroll", handleScroll);

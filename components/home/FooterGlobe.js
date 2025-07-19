@@ -26,8 +26,8 @@ const FooterGlobe = () => {
     const handleScroll = () => {
       if (!ticking) {
         requestAnimationFrame((timestamp) => {
-          const rect = section.getBoundingClientRect();
-          const windowHeight = window.innerHeight;
+      const rect = section.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
 
           // Only play if section is in view
           if (rect.top < windowHeight && rect.bottom > 0) {

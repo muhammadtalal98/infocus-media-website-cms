@@ -111,7 +111,7 @@ export const timelineData = [
   { title: 2021, subTitle: "Guinness type of year", description: ["+ Earning a Guinness World Record for our CSR"], active: false },
   { title: 2022, subTitle: "We keep expanding", description: ["+ Servicing the healthcare sector in the UAE"], active: false },
   { title: 2023, subTitle: "Partnership with Cop28", description: ["+ Main media partners for Cop28"], active: false },
-  { title: 2024, subTitle: "Empowering our teams", description: ["+ Specialized divisions: dedicated teams for key areas like Social  __........            " ,   " Media and Design", "+ Talent investment: focused on continuous growth and expertise"], active: false },
+  { title: 2024, subTitle: "Empowering our teams", description: ["+ Specialized divisions: dedicated teams for key areas like Social  Media and Design", "+ Talent investment: focused on continuous growth and expertise"], active: false },
   
 ];
 

@@ -87,8 +87,8 @@ const WhatWeDo = () => {
           {services.map((service, index) => {
             const isFirstRow = index < columns;
             const isFirstCol = index % columns === 0;
-            const isLastCol = (index + 1) % columns === 0;
-            const isLastItem = index === services.length - 1;
+            const isLastCol = (index +1) % columns === 0;
+            const isLastItem = index === services.length - 3;
             const isAloneInRow = services.length % columns !== 0 && isLastItem;
             const isSecondLastItem = index === services.length - 2;
 
@@ -106,7 +106,9 @@ const WhatWeDo = () => {
         ${!isFirstRow ? "border-t" : ""}
         ${!isFirstCol ? "border-l" : ""}
         ${!isLastCol ? "border-r" : ""}
-        ${isAloneInRow ? "" : ""}
+        ${isAloneInRow ? "border-" : ""}
+        ${isSecondLastItem ? "border-t" : ""}
+        ${isLastItem? "border-t" : ""}
         border-gray-50/20
       `}
               >

@@ -66,7 +66,7 @@ const VerticalTimeLine = () => {
                 />
                 {!isLast && (
                   <div
-                    className={`h-[200px] w-[1px] ${
+                    className={`h-[220px] w-[1px] ${
                       isColored ? "bg-green-500" : "bg-gray-300"
                     }`}
                   />
@@ -92,7 +92,7 @@ const VerticalTimeLine = () => {
                 {item.description.map((desc, i) => (
                   <p
                     key={i}
-                    className="text-[16px] text-gray-500 max-w-[320px] leading-[1.4]"
+                    className="text-[22px] text-gray-500 max-w-[300px] leading-[1.4]"
                   >
                     {desc}
                   </p>

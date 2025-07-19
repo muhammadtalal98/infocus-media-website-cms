@@ -49,24 +49,16 @@ const Navbar = () => {
       "/users",
       "/profile",
       "/cms",
-      "/case-study",
-      "/case-study/[id]",
+    // "/case-study", // REMOVE THIS LINE
+  // "/case-study/[id]", // REMOVE THIS LINE
+
     ];
 
     const shouldHide = hiddenPaths.some((path) => pathname.startsWith(path));
     setIsVisible(!shouldHide);
   }, [pathname]);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      // Check if the navbar is over a dark section by checking the body's background or scroll position
-      // For simplicity, assume black background after scrolling 100px
-      setIsDarkBg(window.scrollY > 100);
-    };
-    window.addEventListener("scroll", handleScroll);
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  // Removed scroll-based color change logic. Logo will only change based on IntersectionObserver.
 
   if (!isVisible) return null;
 

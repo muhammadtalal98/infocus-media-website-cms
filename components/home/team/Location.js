@@ -6,8 +6,38 @@ const Location = () => {
       {/* Text Section */}
       <div className="flex-1 flex flex-col justify-between bg-white text-black px-8 w-full  h-[492px] md:h-[928px] lg:max-h-[950px]">
         <div className="mb-6">
-          <h1 className="pl-10 pt-10 text-[30px] md:text-[100px] lg:text-[100px] font-bold leading-tight">Join</h1>
-          <h1 className="pl-10  text-[30px] md:text-[100px] lg:text-[100px] font-bold leading-tight">OUR TEAM</h1>
+        <h1
+            className="font-bold"
+            style={{
+              width: "568px",
+              paddingTop: "20px",
+              paddingLeft: "40px",
+              fontFamily: 'Bandeins Strange Variable, sans-serif',
+              fontWeight: 700,
+              fontStyle: "bold",
+              fontSize: "100px",
+              lineHeight: "100%",
+              letterSpacing: "-2%",
+            }}
+          >
+            Join
+          </h1>
+          <h1
+            className="font-bold"
+            style={{
+              width: "568px",
+              paddingLeft: "40px",
+              
+              fontFamily: 'Bandeins Strange Variable, sans-serif',
+              fontWeight: 700,
+              fontStyle: "bold",
+              fontSize: "100px",
+              lineHeight: "100%",
+              letterSpacing: "-2%",
+            }}
+          >
+            Our Team
+          </h1>
         </div>
 
         <div className="text-[22px] leading-relaxed mb-8">

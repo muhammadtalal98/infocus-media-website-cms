@@ -1,24 +1,49 @@
 "use client";
-import React, { useRef, useState, useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { gsap } from "gsap";
+import ScrollTrigger from "gsap/ScrollTrigger";
 import { timelineData } from "@/utils/data";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const TimeLine = () => {
   const containerRef = useRef(null);
+  const timelineRef = useRef(null);
+  const lastItemRef = useRef(null);
   const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
     const container = containerRef.current;
-    if (!container) return;
+    const timeline = timelineRef.current;
 
-    const handleScroll = () => {
-      const maxScrollLeft = container.scrollWidth - container.clientWidth;
-      const progress = maxScrollLeft === 0 ? 0 : container.scrollLeft / maxScrollLeft;
-      setScrollProgress(progress);
+    const containerWidth = container.offsetWidth;
+    const timelineWidth = timeline.scrollWidth;
+    const moveDistance = timelineWidth - containerWidth;
+
+    const lastItemWidth = lastItemRef.current?.offsetWidth || 0;
+    const extraDistance = lastItemWidth + 150; // Give the last item space to show + a little pause
+    const totalScrollDistance = moveDistance + extraDistance;
+
+    const tl = gsap.to(timeline, {
+      x: -moveDistance,
+      ease: "power1.inOut",
+      scrollTrigger: {
+        trigger: container,
+        start: "center center",
+        end: () => `+=${totalScrollDistance}`,
+        scrub: true,
+        pin: true,
+        anticipatePin: 1,
+        ease: "power1.out",
+        onUpdate: (self) => {
+          setScrollProgress(self.progress);
+        },
+      },
+    });
+
+    return () => {
+      tl.scrollTrigger?.kill();
     };
-
-    container.addEventListener("scroll", handleScroll);
-    handleScroll(); // set initial
-    return () => container.removeEventListener("scroll", handleScroll);
   }, []);
 
   const getItemColorProgress = (index) => {
@@ -32,10 +57,9 @@ const TimeLine = () => {
   return (
     <div
       ref={containerRef}
-      className="hidden lg:block relative w-full h-screen overflow-x-auto overflow-y-hidden bg-white px-4 md:px-8 py-20"
-      style={{ whiteSpace: 'nowrap', maxWidth: '100vw', boxSizing: 'border-box' }}
+      className="hidden lg:block relative w-full bg-white overflow-hidden px-4 md:px-8 py-20"
     >
-      <div className="flex min-w-max h-full gap-12" style={{ maxWidth: '100%', boxSizing: 'border-box' }}>
+      <div ref={timelineRef} className="flex min-w-max">
         {timelineData.map((item, index) => {
           const isLastActive = index === lastActiveIndex;
           const isColored = getItemColorProgress(index);
@@ -44,8 +68,8 @@ const TimeLine = () => {
           return (
             <div
               key={index}
-              className="flex flex-col items-center min-w-[420px] max-w-[600px] flex-shrink-0 mr-8"
-              style={isLast ? { paddingRight: 64, boxSizing: 'border-box' } : {}}
+              ref={isLast ? lastItemRef : null}
+              className="flex flex-col items-center min-w-[250px]"
             >
               <div className="mb-6">
                 <div
@@ -63,36 +87,24 @@ const TimeLine = () => {
                   />
                   {index !== timelineData.length - 1 && (
                     <div
-                      className={`h-[1px] w-[600px] ${
+                      className={`h-[1px] w-[500px] ${
                         isColored ? "bg-green-500" : "bg-gray-300"
                       }`}
                     />
                   )}
                 </div>
-                <div className="text-[22px] font-bold sub-heading">
+                <div className="text-[22px] font-medium font-bold">
                   {item.subTitle}
                 </div>
                 {item.description.map((desc, i) => (
                   <div
                     key={i}
-                    className="text-[22px] text-gray-500 leading-relaxed sub-heading mb-8"
-                    style={{
-                      maxWidth: '100%',
-                      width: '100%',
-                      wordBreak: 'break-word',
-                      overflowWrap: 'break-word',
-                      boxSizing: 'border-box',
-                    }}
+                    className="text-[22px] text-gray-500 leading-relaxed sub-heading break-words max-w-[950px]"
                   >
                     <p
-                      className={`break-words max-w-[550px] w-full ${
+                      className={`break-words max-w-[550px] ${
                         isLastActive ? "mr-5" : ""
                       }`}
-                      style={{
-                        wordBreak: 'break-word',
-                        overflowWrap: 'break-word',
-                        marginBottom: 0,
-                      }}
                     >
                       {desc}
                     </p>
@@ -102,8 +114,14 @@ const TimeLine = () => {
             </div>
           );
         })}
+        {/* Spacer to allow last item to fully scroll into view */}
+        <div style={{ minWidth: '2vw', flexShrink: 0 }} />
       </div>
     </div>
+
+
+    
+  
   );
 };
 

@@ -17,44 +17,22 @@ const TopSection = () => {
 
     if (!video || !section) return;
 
-    // Load video metadata before measuring duration
-    const handleLoadedData = () => {
-      setIsVideoLoaded(true);
-
-      requestAnimationFrame(() => {
-        const videoDuration = video.duration || 6;
-
-        video.pause();
-        video.currentTime = 0.01; // Avoid stutter at 0
-
-        gsap.set(video, { currentTime: 0.01 });
-
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: section,
-            start: "top top",
-            end: "+=8000", // Much slower scrub
-            scrub: 1,
-            pin: true,
-            anticipatePin: 1,
-            id: "top-globe",
-            // markers: true, // uncomment for debugging
-          },
-        });
-
-        tl.to(video, {
-          currentTime: videoDuration,
-          ease: "none"
-        });
-      });
-    };
-
-    video.addEventListener("loadeddata", handleLoadedData);
+    // Use IntersectionObserver to play/pause video when in view
+    const observer = new window.IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          video.play();
+          video.playbackRate = 1; // Increase speed
+        } else {
+          video.pause();
+        }
+      },
+      { threshold: 0.2 }
+    );
+    observer.observe(section);
 
     return () => {
-      video.removeEventListener("loadeddata", handleLoadedData);
-      
-      ScrollTrigger.getAll().forEach((t) => t.kill());
+      observer.disconnect();
     };
   }, []);
 
@@ -68,11 +46,13 @@ const TopSection = () => {
         {/* Scroll-controlled video */}
         <video
           ref={videoRef}
-          src="/Final.mp4"
+          src="/Final1.mp4"
           className="absolute inset-0 w-full h-full object-cover"
           muted
           playsInline
           preload="auto"
+          autoPlay
+          loop
           style={{ willChange: 'transform' }}
         />
 

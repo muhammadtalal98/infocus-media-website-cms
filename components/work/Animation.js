@@ -2,13 +2,35 @@
 
 import React, { useState } from "react";
 import { animationData } from "@/utils/data";
+import { useRouter } from "next/navigation";
 
 const Animation = () => {
   const ITEMS_PER_PAGE = 4; // Show 2 items initially
   const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
+  const router = useRouter();
 
   const handleSeeMore = () => {
     setVisibleCount((prev) => prev + ITEMS_PER_PAGE);
+  };
+
+  const handleImageClick = (item, image) => {
+    const title = item.title.toLowerCase();
+    const imageName = image.toLowerCase();
+    if (title.includes("social media") || imageName.includes("social")) {
+      router.push("/socialmedia");
+    } else if (
+      title.includes("event") ||
+      title.includes("event media coverage") ||
+      imageName.includes("event")
+    ) {
+      router.push("/eventcoverage");
+    } else if (
+      title.includes("comercial video marketing") ||
+      title.includes("commercial video marketing") ||
+      imageName.includes("commercial")
+    ) {
+      router.push("/videoproduction");
+    }
   };
 
   const isAllDataVisible = visibleCount >= animationData.length;
@@ -26,7 +48,7 @@ const Animation = () => {
                 <div className="flex gap-10 md:gap-0 md:flex-col md:text-right text-left">
                   <p className="text-sm text-gray-500 text-[16px] md:text-[18px] lg:text-[22px] uppercase">CLIENT</p>
                   <div className="flex flex-col">
-                    <h1 className="text-xl font-semibold text-[40px] md:text-[40px] lg:text-[64px]">{item.title}</h1>
+                    <h1 className="text-xl font-semibold text-[40px] md:text-[40px] lg:text-[64px] cursor-pointer" onClick={() => handleImageClick(item, item.image[0])}>{item.title}</h1>
                   </div>
                 </div>
               </div>
@@ -38,8 +60,9 @@ const Animation = () => {
                     key={i}
                     src={image}
                     alt={item.title || "Case Study"}
-                    className="object-cover"
-                    style={{ width: '750px', height: '750px', position: 'relative', top: '165px', left: '585px' }}
+                    className="object-cover cursor-pointer"
+                    style={{ width: '750px', height: '750px', position: 'relative', top: '10px', left: '10px' }}
+                    onClick={() => handleImageClick(item, image)}
                   />
                 ))}
               </div>

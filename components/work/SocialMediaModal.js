@@ -20,7 +20,7 @@ const SocialMediaModal = ({ images, currentIndex, onClose }) => {
             <img
               src={images[index]}
               alt="Case Study"
-              className="max-w-[400px] max-h-[400px] object-cover"
+              className="max-w-[750px] max-h-[750px] object-cover"
             />
           </div>
 

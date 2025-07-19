@@ -4,6 +4,8 @@ import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import Loader from "../Loader";
 import axios from "axios";
+import { useRouter } from "next/navigation";
+import data from "./caseStudyData";
 
 // const data = [
 //   {
@@ -38,56 +40,14 @@ import axios from "axios";
 //   },
 // ];
 
-const data = [
-  {
-    title: "COVID-19",
-    description: "Educating the World about COVID-19 with the Ministry of Health and Prevention",
-    image: "/assets/Case studies/COVID-19.jpg",
-  },
-  {
-    title: "MAESTRO 7x CAMPAIGN",
-    description: "The rebranding campaign for 7X.",
-    image: "/assets/Case studies/MAESTRO.jpg",
-  },
-  {
-    title: "EXPO",
-    description: "Expo 2020 Dubai with the Federal Youth Authority",
-    image: "/assets/Case studies/EXPO.jpg",
-  },
-  {
-    title: "EHS",
-    description: "Capturing Innovation in Healthcare. InFocus Media’s Impact at Arab Health with EHS",
-    image: "/assets/Case studies/COVID-19.jpg",
-  },
-  {
-    title: "AL GHAEER",
-    description: "Expo 2020 Dubai with the Federal Youth Authority",
-    image: "/assets/Case studies/MAESTRO.jpg",
-  },
-  {
-    title: "Al GHAITH GROUP",
-    description: "Crafting a Legacy for the Future. InFocus Media's Branding Journey with Al Ghaith Group",
-    image: "/assets/Case studies/COVID-19.jpg",
-  },
-  {
-    title: "MAESTRO 7x CAMPAIGN",
-    description: "The rebranding campaign for 7X.",
-    image: "/assets/Case studies/MAESTRO.jpg",
-  },
- 
-  
-  {
-    title: "MAESTRO 7x CAMPAIGN",
-    description: "The rebranding campaign for 7X.",
-    image: "/assets/Case studies/MAESTRO.jpg",
-  },
-];
 
 const CaseStudies = () => {
   const [visibleItems, setVisibleItems] = useState(6);
   const [showAll, setShowAll] = useState(false);
   // const [data, setData] = useState([])
   const [loading, setLoading] = useState(false)
+  const [selectedItem, setSelectedItem] = useState(null);
+  const router = useRouter();
 
   // const fetchData = async () => {
   //   try {
@@ -138,14 +98,14 @@ const CaseStudies = () => {
                   className="w-full h-[242px] md:h-[487px] lg:h-[620px] object-cover transition-all duration-300 group-hover:blur-sm"
                 />
                 {/* Hover Button */}
-                <Link
-                  href={`/case-studies/${item._id}`}
+                <button
+                  onClick={() => router.push(`/case-study-detail?title=${encodeURIComponent(item.title)}`)}
                   className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300 cursor-pointer"
                 >
                   <span className="bg-white text-black px-4 py-2 text-[16px] md:text-[18px] lg:text-[22px] font-medium rounded shadow-md">
                     Read
                   </span>
-                </Link>
+                </button>
               </div>
 
               {/* Title and Description */}

@@ -1,6 +1,7 @@
 
 import CaseStudies from '@/components/case studies/CaseStudies'
 import Footer from '@/components/home/Footer'
+
 import React from 'react'
 
 const page = () => {
