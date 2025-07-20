@@ -20,8 +20,7 @@ const CaseStudyDetail = ({ caseStudy }) => {
         <img
           src={selected.image}
           alt={selected.title}
-          className="object-cover rounded mb-8 mx-auto"
-          style={{ width: '1800px', height: '780px' }}
+          className="object-cover rounded mb-8 mx-auto w-full max-w-6xl h-[780px]"
         />
         <div className="flex flex-col md:flex-row gap-8 mb-12">
           <div className="md:w-1/2">
@@ -36,7 +35,7 @@ const CaseStudyDetail = ({ caseStudy }) => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           {others.map((item, idx) => (
             <div key={idx} className="flex flex-col bg-gray-0 rounded shadow p-0">
-              <img src={item.image} alt={item.title} className="w-full h-[402px] w-[568px] object-cover rounded mr-10 mb-6" />
+              <img src={item.image} alt={item.title} className="w-full h-[402px] object-cover rounded mb-6" />
               <h3 className="text-xl font-semibold mb-1">{item.title.toUpperCase()}</h3>
               <p className="text-gray-700 mb-2">{item.description}</p>
               
