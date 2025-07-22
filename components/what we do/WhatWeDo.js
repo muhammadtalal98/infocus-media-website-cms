@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useRef, useState, useEffect } from "react";
+import Image from "next/image";
 
 const WhatWeDo = () => {
   const [hoveredIndex, setHoveredIndex] = useState(null);
@@ -113,9 +114,11 @@ const WhatWeDo = () => {
       `}
               >
                 <div className="flex lg:flex-col justify-between h-full ">
-                  {service.icon && <img
+                  {service.icon && <Image
                     src={service.icon}
                     alt={service.title}
+                    width={116}
+                    height={116}
                     className="w-[80px] h-[80px] md:w-[96px] md:h-[96px] lg:w-[116px] lg:h-[116px] hover:scale-110 transition-transform duration-300"
                   />}
                 </div>

@@ -24,7 +24,7 @@ export default function HeroSection() {
       const viewportWidth = window.innerWidth;
 
       const startX = 0;
-      const endX = -textWidth + viewportWidth * 0.9;
+      const endX = -textWidth + viewportWidth - 10;
 
       gsap.set(text, { attr: { x: startX } });
 
@@ -89,7 +89,7 @@ export default function HeroSection() {
                   fontWeight="bold"
                   fontFamily="inherit"
                   fill="black"
-                  className="whitespace-nowrap"
+                  className="whitespace-nowrap" 
                 >
                   Infocus Media
                   <tspan fontSize="20vw" dy="-0.65em">

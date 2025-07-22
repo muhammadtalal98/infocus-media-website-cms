@@ -3,6 +3,7 @@
 import { useRef, useLayoutEffect, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Image from "next/image";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -22,7 +23,7 @@ const TopSection = () => {
       ([entry]) => {
         if (entry.isIntersecting) {
           video.play();
-          video.playbackRate = 1; // Increase speed
+          video.playbackRate = 1.5; // Increase speed
         } else {
           video.pause();
         }
@@ -51,17 +52,18 @@ const TopSection = () => {
           muted
           playsInline
           preload="auto"
-          autoPlay
-          loop
           style={{ willChange: 'transform' }}
         />
 
         {/* Overlay */}
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center z-10 px-4">
-          <img
+          <Image
             src="/logo.png"
             alt="Logo"
+            width={580}
+            height={68}
             className="w-3/4 max-w-[580px] max-h-[68px] mb-6 object-contain"
+            priority
           />
           <p className="uppercase text-white text-[16px] md:text-[18px] lg:text-[22px]">
             Born from Emirati soil, our roots run deep

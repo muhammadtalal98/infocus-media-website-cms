@@ -2,6 +2,8 @@ import "./globals.css";
 import Navbar from "../components/Navbar";
 import ParallaxWrapper from "../components/ParallaxWrapper";
 import { AuthProvider } from "@/context/AuthContext";
+import { Almarai } from "next/font/google";
+const almarai = Almarai({ subsets: ["arabic"], weight: ["300", "400", "700", "800"] });
 
 export const metadata = {
   title: "InFocusMedia",
@@ -12,14 +14,16 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=swap"
-          rel="stylesheet"
-        />
+        {/* Removed Google Fonts <link> in favor of next/font */}
+        <title>Infocus Media - Creative Agency</title>
+        <meta name="description" content="Infocus Media: Born from Emirati soil, our roots run deep and our vision soars high. Explore our case studies, services, and creative work." />
+        <meta property="og:title" content="Infocus Media - Creative Agency" />
+        <meta property="og:description" content="Explore our case studies, services, and creative work." />
+        <meta property="og:image" content="/logo.png" />
+        <meta property="og:type" content="website" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>
-      <body className="relative">
+      <body className={`relative ${almarai.className}`}>
         {/* 👇 Fixed background layer for mix-blend-difference to work */}
         {/* <div className="fixed inset-0 z-0 bg-red" /> */}
 

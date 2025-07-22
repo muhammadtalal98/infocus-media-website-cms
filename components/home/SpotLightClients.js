@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import Image from "next/image";
 
 const SpotLightClients = () => {
   const clients = [
@@ -57,9 +58,11 @@ const SpotLightClients = () => {
               key={index}
               className="flex-shrink-0  w-[154px] h-[84px] lg:w-[280px] lg:h-[156px] flex items-center justify-center p-4"
             >
-              <img
+              <Image
                 src={client.logo}
                 alt={client.name}
+                width={280}
+                height={156}
                 className="max-w-full max-h-full object-contain"
                 onError={(e) => {
                   e.target.style.display = 'none';
