@@ -135,7 +135,7 @@ const Navbar = () => {
         <div className="w-32 sm:w-48 lg:w-60 transition-colors duration-300">
           <Link href={"/"}>
             <Image
-              src={useWhiteLogo ? "/logo.png" : "/logo-black.png"}
+              src={!useWhiteLogo ? "/logo.png" : "/logo-black.png"}
               onClick={() => setMenuOpen(false)}
               alt="Infocus Media Logo"
               width={250}

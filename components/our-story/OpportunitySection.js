@@ -20,7 +20,7 @@ const OpportunitySection = () => {
           <div className="flex flex-wrap gap-4 justify-center w-full">
             {/* Card 1 */}
             <div className="flex flex-col items-start gap-3 p-4 bg-white text-[18px] md:text-[20px] lg:text-[22px] w-full sm:w-[300px]">
-<img src="/our-story/i-1.png" alt="logo" className="w-[90px] h-[90px] mb-4  object-cover" />
+<img src="/our-story/image1.png" alt="logo" className="w-[90px] h-[90px] mb-4  object-cover" />
               <div>
                 <p className="font-bold ">DUBAI SME</p>
                 <p className="leading-[1.2]">Empowering Emirati entrepreneurs to transform ideas into successful businesses since 2002.</p>
@@ -29,7 +29,7 @@ const OpportunitySection = () => {
 
             {/* Card 2 */}
             <div className="flex flex-col items-start text-[18px] md:text-[20px] lg:text-[22px] gap-3 p-4 bg-white sm:w-[300px]">
-              <img src="/our-story/i-2.png" alt="logo" className="w-[80px] h-[80px] mb-4 object-contain" />
+              <img src="/our-story/image2.png" alt="logo" className="w-[80px] h-[80px] mb-4 object-contain" />
               <div>
                 <p className="font-semibold">DONE BY YOUTH</p>
                 <p className="leading-[1.2]">Connecting passionate young talents with nationwide opportunities to shape UAE's future.</p>
@@ -38,7 +38,7 @@ const OpportunitySection = () => {
 
             {/* Card 3 */}
             <div className="flex flex-col text-[18px] md:text-[20px] lg:text-[22px] items-start gap-3 p-4 bg-white  w-full sm:w-[620px]">
-              <img src="/our-story/i-3.png" alt="logo" className="w-[80px] h-[80px] mb-4  object-contain" />
+              <img src="/our-story/image3.png" alt="logo" className="w-[80px] h-[80px] mb-4  object-contain" />
               <div>
                 <p className="font-bold">ICV</p>
                 <p className="leading-[1.2]">Strengthening UAE's economy by prioritizing local talent, products, and services across industrial sectors.</p>
@@ -54,7 +54,7 @@ const OpportunitySection = () => {
           <div className="flex flex-wrap gap-4 justify-center w-full">
             {/* Card 1 */}
             <div className="flex flex-col items-start gap-3 p-4 bg-white w-full sm:w-[300px]">
-              <img src="/our-story/i-4.png" alt="logo" className="w-[80px] h-[80px] mb-4 object-contain" />
+              <img src="/our-story/image4.png" alt="logo" className="w-[80px] h-[80px] mb-4 object-contain" />
               <div>
                 <p className="font-bold">EMPLIFI</p>
                 <p className="leading-[1.2]">An AI-powered platform that optimizes digital presence and social engagement.</p>
@@ -63,7 +63,7 @@ const OpportunitySection = () => {
 
             {/* Card 2 */}
             <div className="flex flex-col text-[18px] md:text-[20px] lg:text-[22px] items-start gap-3 p-4 bg-white w-full sm:w-[300px]">
-              <img src="/our-story/i-5.png" alt="logo" className="w-[80px] h-[80px] mb-4  object-contain" />
+              <img src="/our-story/image5.png" alt="logo" className="w-[80px] h-[80px] mb-4  object-contain" />
               <div>
                 <p className="font-semibold">PIXEL HOUSE</p>
                 <p className="leading-[1.2]">Transforming ideas into powerful visuals through film, photography, and design since 2013.</p>
@@ -72,7 +72,7 @@ const OpportunitySection = () => {
 
             {/* Card 3 */}
             <div className="flex flex-col text-[18px] md:text-[20px] lg:text-[22px]  items-start gap-3 p-4 bg-white w-full sm:w-[620px]">
-              <img src="/our-story/i-6.png" alt="logo" className="w-[80px] h-[80px] mb-4  object-contain" />
+              <img src="/our-story/image6.png" alt="logo" className="w-[80px] h-[80px] mb-4  object-contain" />
               <div>
                 <p className="font-bold">GARAGE STUDIO</p>
                 <p className="leading-[1.2]">Creating an inspiring space where visionaries turn creative dreams into reality, led by award-winning photographer Shadi Alrefai.</p>
