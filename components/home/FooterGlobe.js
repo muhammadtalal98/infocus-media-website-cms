@@ -38,7 +38,7 @@ const FooterGlobe = () => {
             lastTimestamp = timestamp;
 
             // Map scroll speed to playbackRate (min 0.5, max 2)
-            let playbackRate = Math.min(2, Math.max(0.5, scrollDelta / (timeDelta / 16)));
+            let playbackRate = Math.min(2, Math.max(1, scrollDelta / (timeDelta / 16)));
             video.playbackRate = playbackRate;
             video.play();
 
@@ -46,7 +46,7 @@ const FooterGlobe = () => {
             clearTimeout(scrollTimeout);
             scrollTimeout = setTimeout(() => {
               video.pause();
-            }, 50); // Pause almost immediately after scroll stops
+            }, 150); // Pause almost immediately after scroll stops
           } else {
             video.pause();
           }
@@ -71,14 +71,16 @@ const FooterGlobe = () => {
       {/* Video background */}
       <video
         ref={videoRef}
+        src="/Blob2.mp4"
+        className="absolute inset-0 w-full h-full object-cover"
         muted
         playsInline
         preload="auto"
-        className="absolute inset-0 w-full h-full object-cover z-0"
-      >
-        <source src="/Blob2.mp4" type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
+        autoPlay
+        loop
+        
+        style={{ willChange: 'transform' }}
+      />
 
       {/* Text on top of video */}
       <div className="absolute inset-0 flex flex-col items-center justify-center text-center z-10">

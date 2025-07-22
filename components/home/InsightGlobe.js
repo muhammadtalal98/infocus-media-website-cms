@@ -77,15 +77,16 @@ const InsightGlobe = () => {
         {/* Video Background */}
         <video
           ref={videoRef}
+          src="/Blob2.mp4"
+          className="absolute inset-0 w-full h-full object-cover"
           muted
           playsInline
           preload="auto"
-          className="absolute inset-0 w-full h-full object-cover"
-          style={{ zIndex: 0 }}
-        >
-          <source src="/Blob2.mp4" type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
+          autoPlay
+          loop
+        
+          style={{ willChange: 'transform' }}
+        />
 
         {/* Text Overlay */}
         <div

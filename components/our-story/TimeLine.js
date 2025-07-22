@@ -102,7 +102,7 @@ const TimeLine = () => {
                     className="text-[22px] text-gray-500 leading-relaxed sub-heading break-words max-w-[950px]"
                   >
                     <p
-                      className={`break-words max-w-[550px] ${
+                      className={`break-words max-w-[500px] ${
                         isLastActive ? "mr-5" : ""
                       }`}
                     >

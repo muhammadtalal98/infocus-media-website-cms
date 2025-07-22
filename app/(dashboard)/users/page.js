@@ -3,7 +3,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FiEdit, FiTrash2, FiUserPlus } from "react-icons/fi";
-import UserModal from "@/components/(dashboard)/UserModal";
+import dynamic from "next/dynamic";
+const UserModal = dynamic(() => import("@/components/(dashboard)/UserModal"));
 import Loader from "@/components/Loader";
 
 const Page = () => {

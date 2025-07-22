@@ -107,7 +107,7 @@ export const timelineData = [
   { title: 2017, subTitle: "We expand", description: ["+ Diversification into graphic design services"], active: false },
   { title: 2018, subTitle: "Venturing into new territories", description: ["+ Social media management services", "+ Joining SME"], active: false },
   { title: 2019, subTitle: "The growth never ends", description: ["+ Marketing-consultancy services"], active: false },
-  { title: 2020, subTitle: "A mayor breakthrough", description: ["+ Becoming UAE Gov. media partners for the Covid-19 Crisis", "+ Media partners with Dubai Expo 2020"], active: false },
+  { title: 2020, subTitle: "A mayor breakthrough", description: ["+ Becoming UAE Gov. media partners for the Covid-19 Crisis"+" Media partners with Dubai Expo 2020"], active: false },
   { title: 2021, subTitle: "Guinness type of year", description: ["+ Earning a Guinness World Record for our CSR"], active: false },
   { title: 2022, subTitle: "We keep expanding", description: ["+ Servicing the healthcare sector in the UAE"], active: false },
   { title: 2023, subTitle: "Partnership with Cop28", description: ["+ Main media partners for Cop28"], active: false },
