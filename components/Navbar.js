@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
@@ -18,35 +18,296 @@ const menuItems = [
   { name: "CONTACTS", href: "/contacts" },
 ];
 
+// Enhanced color analysis with better performance
+const analyzeBrightness = (r, g, b) => {
+  // Optimized calculation combining multiple color models for accuracy
+  const perceived = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+  const luminance = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
+  const hsp = Math.sqrt(0.299 * (r * r) + 0.587 * (g * g) + 0.114 * (b * b)) / 255;
+  
+  // Weight different models for better accuracy
+  return (perceived * 0.4 + luminance * 0.4 + hsp * 0.2);
+};
+
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [isDarkBg, setIsDarkBg] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
-  const [isWhiteBg, setIsWhiteBg] = useState(false);
   const pathname = usePathname();
-  console.log("Current pathname:", pathname); // Debugging
-  const lowerPath = pathname.toLowerCase();
-  const useWhiteLogo = lowerPath === '/';
-
   const navbarRef = useRef(null);
+  const logoRef = useRef(null);
+  const checkTimeoutRef = useRef(null);
+  const lastValueRef = useRef(null);
+  const valueHistoryRef = useRef([]);
+  const intervalRef = useRef(null);
+  const lastScrollY = useRef(window.scrollY);
+  const lastScrollTime = useRef(Date.now());
+  const scrollVelocity = useRef(0);
+  const scrollTimeout = useRef(null);
+  const rafId = useRef(null);
 
+  // Force check on route change
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsDarkBg(!entry.isIntersecting);
-      },
-      { threshold: 1 }
-    );
+    checkBackground(true);
+  }, [pathname]);
 
-    if (navbarRef.current) {
-      observer.observe(navbarRef.current);
-    }
+  // Constant background check
+  useEffect(() => {
+    intervalRef.current = setInterval(() => {
+      checkBackground(true);
+    }, 1000); // Check every second
 
     return () => {
-      if (navbarRef.current) observer.unobserve(navbarRef.current);
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
     };
   }, []);
+
+  // Optimized debounce with trend analysis
+  const debouncedSetDarkBg = useCallback((value) => {
+    if (checkTimeoutRef.current) {
+      clearTimeout(checkTimeoutRef.current);
+    }
+
+    // Update value history
+    valueHistoryRef.current.push(value);
+    if (valueHistoryRef.current.length > 3) {
+      valueHistoryRef.current.shift();
+    }
+
+    // Quick response for significant changes
+    const lastValue = lastValueRef.current;
+    const significantChange = lastValue !== null && Math.abs(value - lastValue) > 0.3;
+
+    lastValueRef.current = value;
+
+    const timeoutDuration = significantChange ? 50 : 100; // Faster for big changes
+
+    checkTimeoutRef.current = setTimeout(() => {
+      setIsDarkBg(prev => {
+        // Get average from recent values
+        const avgValue = valueHistoryRef.current.reduce((a, b) => a + b, 0) / valueHistoryRef.current.length;
+        
+        // Dynamic thresholds based on change velocity
+        const changeVelocity = Math.abs(avgValue - value);
+        const threshold = prev ? 0.52 : 0.48; // Tighter thresholds
+        
+        // Prevent rapid switches
+        if (Math.abs(avgValue - threshold) < 0.08) {
+          return prev;
+        }
+
+        return avgValue < threshold;
+      });
+    }, timeoutDuration);
+  }, []);
+
+  const getElementAtPoint = useCallback((x, y) => {
+    const elements = document.elementsFromPoint(x, y);
+    return elements.find(el => {
+      const navbar = navbarRef.current;
+      const style = window.getComputedStyle(el);
+      return navbar && 
+             !navbar.contains(el) && 
+             style.opacity !== '0' &&
+             style.visibility !== 'hidden' &&
+             style.display !== 'none';
+    });
+  }, []);
+
+  const calculateLuminance = useCallback((element) => {
+    if (!element) return 1;
+
+    const computedStyle = window.getComputedStyle(element);
+    let backgroundColor = computedStyle.backgroundColor;
+    
+    // Fast path for solid colors
+    if (backgroundColor.startsWith('rgb(')) {
+      const rgb = backgroundColor.match(/\d+/g);
+      if (rgb) {
+        return analyzeBrightness(+rgb[0], +rgb[1], +rgb[2]);
+      }
+    }
+    
+    // Handle transparent and complex backgrounds
+    if (backgroundColor === 'rgba(0, 0, 0, 0)' || backgroundColor === 'transparent') {
+      let currentEl = element;
+      const seenElements = new Set();
+
+      while (currentEl && currentEl !== document.body && !seenElements.has(currentEl)) {
+        seenElements.add(currentEl);
+        const style = window.getComputedStyle(currentEl);
+        
+        // Check for background color
+        if (style.backgroundColor !== 'rgba(0, 0, 0, 0)' && style.backgroundColor !== 'transparent') {
+          const rgb = style.backgroundColor.match(/\d+/g);
+          return rgb ? analyzeBrightness(+rgb[0], +rgb[1], +rgb[2]) : 1;
+        }
+        
+        // Handle background images more accurately
+        if (style.backgroundImage !== 'none') {
+          // Assume slightly darker than neutral for background images
+          return 0.45;
+        }
+        
+        currentEl = currentEl.parentElement;
+      }
+    }
+
+    return 1; // Default to light
+  }, []);
+
+  const checkBackground = useCallback((immediate = false, isScrolling = false) => {
+    const now = Date.now();
+    if (!immediate && lastValueRef.current && now - lastValueRef.current < (isScrolling ? 16 : 100)) {
+      return;
+    }
+    lastValueRef.current = now;
+
+    const logo = logoRef.current;
+    if (!logo) return;
+
+    // If menu is open, force white logo
+    if (menuOpen) {
+      setIsDarkBg(true);
+      return;
+    }
+
+    const rect = logo.getBoundingClientRect();
+    
+    // Initialize points array
+    const points = [];
+    
+    // Increase sampling points during fast scroll
+    const isHighVelocity = scrollVelocity.current > 30; // pixels per 16ms
+    const rows = isHighVelocity ? 5 : 3;
+    const cols = isHighVelocity ? 6 : 4;
+    
+    // Strategic point placement
+    for (let i = 0; i < rows; i++) {
+      for (let j = 0; j < cols; j++) {
+        // More points in the center, fewer at edges
+        const weight = 1 - Math.abs(j - (cols - 1) / 2) / cols;
+        if (Math.random() < weight) { // Probabilistic sampling
+          points.push({
+            x: rect.left + (rect.width * (j + 0.5)) / cols,
+            y: rect.bottom + 1 + (i * 1.5)
+          });
+        }
+      }
+    }
+
+    // Add extra points at key areas
+    points.push(
+      { x: rect.left + rect.width / 2, y: rect.bottom + 1 }, // Direct center
+      { x: rect.left + rect.width / 4, y: rect.bottom + 1 }, // Quarter left
+      { x: rect.left + (3 * rect.width) / 4, y: rect.bottom + 1 } // Quarter right
+    );
+
+    // Add extra check points in scroll direction
+    if (isScrolling) {
+      const scrollDirection = Math.sign(scrollVelocity.current);
+      const extraPoints = [];
+      
+      // Add more points in scroll direction
+      for (let i = 1; i <= 3; i++) {
+        extraPoints.push({
+          x: rect.left + rect.width / 2,
+          y: rect.bottom + (scrollDirection * i * 2)
+        });
+      }
+      
+      points.push(...extraPoints);
+    }
+
+    // Calculate weighted average with velocity consideration
+    let totalWeight = 0;
+    let weightedLuminance = 0;
+
+    points.forEach((point, index) => {
+      const element = getElementAtPoint(point.x, point.y);
+      if (element) {
+        // Adjust weight based on scroll velocity and point position
+        let weight = 1 - (Math.abs(point.x - (rect.left + rect.width / 2)) / rect.width);
+        
+        if (isScrolling) {
+          // Give more weight to points in scroll direction
+          const distanceFromBottom = Math.abs(point.y - rect.bottom);
+          weight *= Math.exp(-distanceFromBottom / 20);
+        }
+
+        const luminance = calculateLuminance(element);
+        weightedLuminance += luminance * weight;
+        totalWeight += weight;
+      }
+    });
+
+    if (totalWeight > 0) {
+      const averageLuminance = weightedLuminance / totalWeight;
+      debouncedSetDarkBg(averageLuminance);
+    }
+  }, [menuOpen, debouncedSetDarkBg, getElementAtPoint, calculateLuminance]);
+
+  // Enhanced scroll handling
+  useEffect(() => {
+    let lastFrame = 0;
+    
+    const handleScroll = () => {
+      const now = Date.now();
+      const currentScrollY = window.scrollY;
+      const timeDiff = now - lastScrollTime.current;
+      
+      // Calculate scroll velocity (pixels per 16ms frame)
+      if (timeDiff > 0) {
+        scrollVelocity.current = Math.abs(currentScrollY - lastScrollY.current) * (16 / timeDiff);
+      }
+      
+      lastScrollTime.current = now;
+      lastScrollY.current = currentScrollY;
+
+      // Clear existing timeouts
+      if (scrollTimeout.current) {
+        clearTimeout(scrollTimeout.current);
+      }
+      if (rafId.current) {
+        cancelAnimationFrame(rafId.current);
+      }
+
+      // Schedule next check based on velocity
+      const frameTime = now - lastFrame;
+      if (frameTime >= 16 || scrollVelocity.current > 30) {
+        lastFrame = now;
+        rafId.current = requestAnimationFrame(() => {
+          checkBackground(false, true);
+          rafId.current = null;
+        });
+      }
+
+      // Set scroll end detection
+      scrollTimeout.current = setTimeout(() => {
+        // Final check after scrolling stops
+        checkBackground(true, false);
+        scrollVelocity.current = 0;
+        scrollTimeout.current = null;
+      }, 150); // Adjust this value if needed
+    };
+
+    // Add passive scroll listener
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    // Cleanup
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (scrollTimeout.current) {
+        clearTimeout(scrollTimeout.current);
+      }
+      if (rafId.current) {
+        cancelAnimationFrame(rafId.current);
+      }
+    };
+  }, [checkBackground]);
 
   useEffect(() => {
     const hiddenPaths = [
@@ -54,74 +315,63 @@ const Navbar = () => {
       "/users",
       "/profile",
       "/cms",
-    // "/case-study", // REMOVE THIS LINE
-  // "/case-study/[id]", // REMOVE THIS LINE
-
     ];
 
     const shouldHide = hiddenPaths.some((path) => pathname.startsWith(path));
     setIsVisible(!shouldHide);
   }, [pathname]);
 
-  useEffect(() => {
-    const navbar = navbarRef.current;
-    if (!navbar) return;
-    const nextElement = navbar.nextElementSibling;
-    if (!nextElement) return;
-    const checkBg = () => {
-      const style = window.getComputedStyle(nextElement);
-      const bgColor = style.backgroundColor;
-      // Use logo.png if background is black, else use logo-black.png
-      if (bgColor === 'rgb(0, 0, 0)') {
-        setIsWhiteBg(false); // logo.png
-      } else {
-        setIsWhiteBg(true); // logo-black.png
-      }
-    };
-    checkBg();
-    // Observe for class or style changes
-    const observer = new MutationObserver(checkBg);
-    observer.observe(nextElement, { attributes: true, attributeFilter: ['class', 'style'] });
-    return () => observer.disconnect();
-  }, [pathname]);
-
-  // Removed scroll-based color change logic. Logo will only change based on IntersectionObserver.
-
   if (!isVisible) return null;
 
-  const iconColor = menuOpen || isDarkBg ? "white" : "black";
+  // Icon colors now based on menuOpen state
+  const iconColor = menuOpen ? "white" : (isDarkBg ? "white" : "black");
   const bgColor = menuOpen ? "bg-black" : "bg-gray-200";
-  const iconColor1 = menuOpen || isDarkBg ? "black" : "white";
   const bgColor1 = menuOpen ? "bg-white" : "bg-black";
   
   return (
     <>
-      {/* Fullscreen Overlay */}
+      {/* Fullscreen Overlay - Preserved as is */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div
-            initial={{ y: "-100%" }}
-            animate={{ y: 0 }}
-            exit={{ y: "-100%" }}
-            transition={{ duration: 0.5, ease: "easeInOut" }}
-            className="fixed top-0 left-0 w-full h-screen bg-black text-white flex flex-col items-center justify-center gap-2 text-2xl sm:text-3xl md:text-5xl font-bold z-40"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1, ease: 'easeInOut' }}
+            className="fixed top-0 left-0 w-full h-screen bg-black z-40 flex items-center justify-center"
           >
-            {menuItems.map((item, index) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => setMenuOpen(false)}
-                onMouseEnter={() => setHoveredIndex(index)}
-                onMouseLeave={() => setHoveredIndex(null)}
-                className={`transition-colors duration-200 md:text-[32px] text-[40px] lg:text-[74px] ${
-                  hoveredIndex !== null && hoveredIndex !== index
-                    ? "text-white/30"
-                    : "text-white hover:text-gray-300"
-                }`}
-              >
-                {item.name}
-              </Link>
-            ))}
+            <AnimatePresence>
+              {menuOpen && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{
+                    duration: 0.4,
+                    delay: 0.5,
+                    ease: 'easeInOut'
+                  }}
+                  className="flex flex-col items-center justify-center gap-2 text-2xl sm:text-3xl md:text-5xl font-bold"
+                >
+                  {menuItems.map((item, index) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={() => setMenuOpen(false)}
+                      onMouseEnter={() => setHoveredIndex(index)}
+                      onMouseLeave={() => setHoveredIndex(null)}
+                      className={`transition-colors duration-200 md:text-[32px] text-[40px] lg:text-[74px] ${
+                        hoveredIndex !== null && hoveredIndex !== index
+                          ? "text-white/30"
+                          : "text-white hover:text-gray-300"
+                      }`}
+                    >
+                      {item.name}
+                    </Link>
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
           </motion.div>
         )}
       </AnimatePresence>
@@ -129,31 +379,31 @@ const Navbar = () => {
       {/* Navbar */}
       <nav
         ref={navbarRef}
-        className="fixed top-3 left-2 w-full z-50 px-6 py-4 flex items-center justify-between transition-all"
+        className="fixed top-0 left-0 w-full z-50 px-4 sm:px-6 py-2 sm:py-4 flex items-center justify-between transition-all bg-transparent"
       >
-        {/* Logo */}
-        <div className="w-32 sm:w-48 lg:w-60 transition-colors duration-300">
+        {/* Logo with ref */}
+        <div ref={logoRef} className="w-24 sm:w-32 md:w-48 lg:w-60 transition-colors duration-200">
           <Link href={"/"}>
             <Image
-              src={!useWhiteLogo ? "/logo.png" : "/logo-black.png"}
+              src={menuOpen || isDarkBg ? "/logo.png" : "/logo-black.png"}
               onClick={() => setMenuOpen(false)}
               alt="Infocus Media Logo"
               width={250}
               height={68}
-              className="w-full h-auto object-contain"
+              className="w-full h-auto object-contain transition-opacity duration-200"
               priority
             />
           </Link>
         </div>
 
         {/* Icons */}
-        <div className="flex items-center justify-center gap-4">
-          {/* Custom Icon Button (example placeholder) */}
-          <Link href="/contacts" className={`p-2 rounded-sm transition cursor-pointer ${bgColor1} text-white`}>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <div className="flex items-center justify-center gap-2 sm:gap-4">
+          {/* Contact Icon Button */}
+          <Link href="/contacts" className={`p-1.5 sm:p-2 rounded-sm transition cursor-pointer ${bgColor1}`}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="sm:w-6 sm:h-6">
               <path
                 d="M21 3H3V16H6.6V21L12.45 16.7368H21V3Z"
-                stroke={iconColor1}
+                stroke={menuOpen ? "black" : "white"}
                 strokeWidth="2"
               />
             </svg>
@@ -162,10 +412,10 @@ const Navbar = () => {
           {/* Hamburger / Close Icon */}
           <button
             onClick={() => setMenuOpen((prev) => !prev)}
-            className={`p-2 rounded-sm transition cursor-pointer ${bgColor}`}
+            className={`p-1.5 sm:p-2 rounded-sm transition cursor-pointer ${bgColor}`}
           >
             {menuOpen ? (
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="sm:w-5 sm:h-5">
                 <line
                   x1="3"
                   y1="3"
@@ -184,22 +434,10 @@ const Navbar = () => {
                 />
               </svg>
             ) : (
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <line y1="4" x2="24" y2="4" stroke={iconColor} strokeWidth="3" />
-                <line
-                  y1="12"
-                  x2="24"
-                  y2="12"
-                  stroke={iconColor}
-                  strokeWidth="3"
-                />
-                <line
-                  y1="20"
-                  x2="24"
-                  y2="20"
-                  stroke={iconColor}
-                  strokeWidth="3"
-                />
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="sm:w-6 sm:h-6">
+                <line y1="4" x2="24" y2="4" stroke="black" strokeWidth="3" />
+                <line y1="12" x2="24" y2="12" stroke="black" strokeWidth="3" />
+                <line y1="20" x2="24" y2="20" stroke="black" strokeWidth="3" />
               </svg>
             )}
           </button>
