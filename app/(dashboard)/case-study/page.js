@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { useEditor, EditorContent } from "@tiptap/react";
+import dynamic from "next/dynamic";
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
 import TextAlign from "@tiptap/extension-text-align";
@@ -20,6 +20,9 @@ import {
 } from "react-icons/fa";
 import { MdVideoLibrary } from "react-icons/md";
 import Notification from "@/components/Notification";
+import { useEditor } from "@tiptap/react";
+
+const EditorContent = dynamic(() => import("@tiptap/react").then(mod => mod.EditorContent), { ssr: false });
 
 const ToolbarButton = ({ onClick, isActive, icon: Icon, label }) => (
   <button

@@ -3,7 +3,9 @@
 import React, { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
-import { useEditor, EditorContent } from "@tiptap/react";
+import dynamic from "next/dynamic";
+const EditorContent = dynamic(() => import("@tiptap/react").then(mod => mod.EditorContent));
+const useEditor = dynamic(() => import("@tiptap/react").then(mod => mod.useEditor));
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
 import TextAlign from "@tiptap/extension-text-align";

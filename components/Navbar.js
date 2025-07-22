@@ -4,6 +4,7 @@ import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 
 const menuItems = [
   { name: "HOME", href: "/" },
@@ -22,7 +23,11 @@ const Navbar = () => {
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [isDarkBg, setIsDarkBg] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
+  const [isWhiteBg, setIsWhiteBg] = useState(false);
   const pathname = usePathname();
+  console.log("Current pathname:", pathname); // Debugging
+  const lowerPath = pathname.toLowerCase();
+  const useWhiteLogo = lowerPath === '/';
 
   const navbarRef = useRef(null);
 
@@ -58,15 +63,37 @@ const Navbar = () => {
     setIsVisible(!shouldHide);
   }, [pathname]);
 
+  useEffect(() => {
+    const navbar = navbarRef.current;
+    if (!navbar) return;
+    const nextElement = navbar.nextElementSibling;
+    if (!nextElement) return;
+    const checkBg = () => {
+      const style = window.getComputedStyle(nextElement);
+      const bgColor = style.backgroundColor;
+      // Use logo.png if background is black, else use logo-black.png
+      if (bgColor === 'rgb(0, 0, 0)') {
+        setIsWhiteBg(false); // logo.png
+      } else {
+        setIsWhiteBg(true); // logo-black.png
+      }
+    };
+    checkBg();
+    // Observe for class or style changes
+    const observer = new MutationObserver(checkBg);
+    observer.observe(nextElement, { attributes: true, attributeFilter: ['class', 'style'] });
+    return () => observer.disconnect();
+  }, [pathname]);
+
   // Removed scroll-based color change logic. Logo will only change based on IntersectionObserver.
 
   if (!isVisible) return null;
 
   const iconColor = menuOpen || isDarkBg ? "white" : "black";
-  const bgColor = menuOpen ? "bg-black" : "bg-gray-100";
+  const bgColor = menuOpen ? "bg-black" : "bg-gray-200";
   const iconColor1 = menuOpen || isDarkBg ? "black" : "white";
   const bgColor1 = menuOpen ? "bg-white" : "bg-black";
-
+  
   return (
     <>
       {/* Fullscreen Overlay */}
@@ -102,16 +129,19 @@ const Navbar = () => {
       {/* Navbar */}
       <nav
         ref={navbarRef}
-        className="fixed top-0 left-0 w-full z-50 px-6 py-4 flex items-center justify-between transition-all"
+        className="fixed top-3 left-2 w-full z-50 px-6 py-4 flex items-center justify-between transition-all"
       >
         {/* Logo */}
-        <div className="w-[240px] transition-colors duration-300">
+        <div className="w-32 sm:w-48 lg:w-60 transition-colors duration-300">
           <Link href={"/"}>
-            <img
-              src={isDarkBg ? "/logo.png" : "/logo-black.png"}
+            <Image
+              src={useWhiteLogo ? "/logo.png" : "/logo-black.png"}
               onClick={() => setMenuOpen(false)}
               alt="Infocus Media Logo"
-              className="sm:w-[250px] w-[180px] h-auto object-contain"
+              width={250}
+              height={68}
+              className="w-full h-auto object-contain"
+              priority
             />
           </Link>
         </div>
