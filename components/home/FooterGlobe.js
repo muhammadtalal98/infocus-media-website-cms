@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useRef, useLayoutEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
@@ -11,55 +11,36 @@ const FooterGlobe = () => {
   const videoRef = useRef(null);
   const sectionRef = useRef(null);
 
-  useEffect(() => {
-    const video = videoRef.current;
+  useLayoutEffect(() => {
     const section = sectionRef.current;
+    const video = videoRef.current;
     if (!video || !section) return;
 
-    video.pause();
+    const handleLoadedData = () => {
+      const duration = video.duration || 1;
+      video.currentTime = 0;
+      gsap.set(video, { currentTime: 0 });
 
-    let lastScrollY = window.scrollY;
-    let ticking = false;
-    let lastTimestamp = performance.now();
-    let scrollTimeout;
-
-    const handleScroll = () => {
-      if (!ticking) {
-        requestAnimationFrame((timestamp) => {
-      const rect = section.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
-
-          // Only play if section is in view
-          if (rect.top < windowHeight && rect.bottom > 0) {
-            // Calculate scroll speed
-            const scrollDelta = Math.abs(window.scrollY - lastScrollY);
-            const timeDelta = timestamp - lastTimestamp;
-            lastScrollY = window.scrollY;
-            lastTimestamp = timestamp;
-
-            // Map scroll speed to playbackRate (min 0.5, max 2)
-            let playbackRate = Math.min(2, Math.max(1, scrollDelta / (timeDelta / 16)));
-            video.playbackRate = playbackRate;
-            video.play();
-
-            // Pause video immediately when scrolling stops
-            clearTimeout(scrollTimeout);
-            scrollTimeout = setTimeout(() => {
-              video.pause();
-            }, 150); // Pause almost immediately after scroll stops
-          } else {
-            video.pause();
-          }
-          ticking = false;
-        });
-        ticking = true;
-      }
+      gsap.to(video, {
+        currentTime: duration,
+        ease: "none",
+        scrollTrigger: {
+          trigger: section,
+          start: "top 70%",   // Start when section is 30% in viewport
+          end: "top 10%",     // End quickly for a snappy effect
+          scrub: 0.5,
+          // pin: true,       // Uncomment if you want to pin the section
+          id: "footer-globe-video",
+          // markers: true,   // Uncomment for debugging
+        },
+      });
     };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
+    video.addEventListener("loadeddata", handleLoadedData);
+
     return () => {
-      window.removeEventListener("scroll", handleScroll);
-      clearTimeout(scrollTimeout);
+      video.removeEventListener("loadeddata", handleLoadedData);
+      ScrollTrigger.getAll().forEach((t) => t.kill());
     };
   }, []);
 
@@ -71,14 +52,11 @@ const FooterGlobe = () => {
       {/* Video background */}
       <video
         ref={videoRef}
-        src="/Blob2.mp4"
+        src="/bloc-short.mp4"
         className="absolute inset-0 w-full h-full object-cover"
         muted
         playsInline
         preload="auto"
-        autoPlay
-        loop
-        
         style={{ willChange: 'transform' }}
       />
 
@@ -92,7 +70,6 @@ const FooterGlobe = () => {
           <h1 className="text-[60px] md:text-[100px] font-bold">something great</h1>
           <h1 className="text-[60px] md:text-[100px] font-bold mb-2">together!</h1>
         </div>
-
         <div className="text-center mt-4">
           <Link href="/contacts" className="bg-black text-[16px] md:text-[18px] lg:text-[22px] text-white px-4 py-2 cursor-pointer hover:scale-105 transition-transform duration-300 rounded-md font-medium inline-block">
             let's Go

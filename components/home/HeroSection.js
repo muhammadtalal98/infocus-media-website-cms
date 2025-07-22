@@ -55,10 +55,15 @@ export default function HeroSection() {
       ref={sectionRef}
       className="relative w-screen min-h-screen overflow-hidden"
     >
-      {/* Background Image (Large Screens Only) */}
-      <div
-        className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat hidden lg:block"
-        style={{ backgroundImage: 'url("/main.png")' }}
+      {/* Background Video (Large Screens Only) */}
+      <video
+        className="absolute inset-0 z-0 w-full h-full object-cover hidden lg:block"
+        src="/Final1.mp4"
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload="auto"
       />
 
       {/* Large Screens: Animated Text Mask */}

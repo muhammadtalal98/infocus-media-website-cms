@@ -52,7 +52,7 @@ const CaseStudies = () => {
       <div className="px-4 lg:px-6 py-20">
         <div className="text-center mb-16">
           <motion.h1 
-            className="text-5xl font-bold font-bandeins-strange text-black text-center mb-12"
+            className="ext-[40px] md:text-[64px] font-bold font-bandeins-strange text-black text-center mb-12"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
@@ -61,6 +61,7 @@ const CaseStudies = () => {
             Case Studies
           </motion.h1>
         </div>
+   
 
         <div className="flex flex-col lg:flex-row justify-center items-stretch gap-10">
           {data.slice(0, 3).map((item, index) => (

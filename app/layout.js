@@ -23,7 +23,7 @@ export default function RootLayout({ children }) {
         <meta property="og:type" content="website" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>
-      <body className={`relative ${almarai.className}`}>
+      <body className={`relatives`}>
         {/* 👇 Fixed background layer for mix-blend-difference to work */}
         {/* <div className="fixed inset-0 z-0 bg-red" /> */}
 

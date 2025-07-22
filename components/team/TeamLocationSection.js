@@ -10,7 +10,7 @@ const TeamLocationSection = () => {
             className=" text-black font-bold pl-2 sm:pl-4 md:pl-8 lg:pl-10 text-4xl sm:text-5xl md:text-6xl lg:text-7xl"
             style={{
               width: "568px",
-              paddingTop: "10px",
+              paddingTop: "20px",
               fontFamily: 'Bandeins Strange Variable, sans-serif',
               fontWeight: 700,
               fontStyle: "bold",
