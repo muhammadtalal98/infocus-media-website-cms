@@ -41,19 +41,22 @@ const Navbar = () => {
   const lastValueRef = useRef(null);
   const valueHistoryRef = useRef([]);
   const intervalRef = useRef(null);
-  const lastScrollY = useRef(window.scrollY);
-  const lastScrollTime = useRef(Date.now());
+  const lastScrollY = useRef(typeof window !== 'undefined' ? window.scrollY : 0);
+  const lastScrollTime = useRef(typeof window !== 'undefined' ? Date.now() : 0);
   const scrollVelocity = useRef(0);
   const scrollTimeout = useRef(null);
   const rafId = useRef(null);
 
   // Force check on route change
   useEffect(() => {
+    if (typeof window === 'undefined') return;
     checkBackground(true);
   }, [pathname]);
 
   // Constant background check
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
     intervalRef.current = setInterval(() => {
       checkBackground(true);
     }, 1000); // Check every second
@@ -105,6 +108,8 @@ const Navbar = () => {
   }, []);
 
   const getElementAtPoint = useCallback((x, y) => {
+    if (typeof window === 'undefined' || typeof document === 'undefined') return null;
+    
     const elements = document.elementsFromPoint(x, y);
     return elements.find(el => {
       const navbar = navbarRef.current;
@@ -118,7 +123,7 @@ const Navbar = () => {
   }, []);
 
   const calculateLuminance = useCallback((element) => {
-    if (!element) return 1;
+    if (!element || typeof window === 'undefined') return 1;
 
     const computedStyle = window.getComputedStyle(element);
     let backgroundColor = computedStyle.backgroundColor;
@@ -252,6 +257,8 @@ const Navbar = () => {
 
   // Enhanced scroll handling
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
     let lastFrame = 0;
     
     const handleScroll = () => {
