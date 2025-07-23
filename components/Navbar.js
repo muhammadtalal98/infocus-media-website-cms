@@ -386,7 +386,7 @@ const Navbar = () => {
       {/* Navbar */}
       <nav
         ref={navbarRef}
-        className="fixed top-0 left-0 w-full z-50 px-4 sm:px-6 py-2 sm:py-4 flex items-center justify-between transition-all bg-transparent"
+        className="fixed top-0 left-0 w-full sm:h-48px sm:w-342px z-50 px-4 sm:px-6 py-2 sm:py-4 flex items-center justify-between transition-all bg-transparent"
       >
         {/* Logo with ref */}
         <div ref={logoRef} className="w-24 sm:w-32 md:w-48 lg:w-60 transition-colors duration-200">

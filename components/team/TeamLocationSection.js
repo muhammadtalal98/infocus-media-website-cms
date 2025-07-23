@@ -36,7 +36,7 @@ const TeamLocationSection = () => {
         </h1>
       </div>
 
-      <div className="text-[22px] lg:w-[728]  leading-relaxed mb-10 mt-20 md:mt-0">
+      <div className="text-[22px] lg:w-[728]  leading-relaxed mb-20 mt-20 md:mt-0">
         <p
           className="text-white pl-2 sm:pl-4 md:pl-8 lg:pl-10 text-base sm:text-lg md:text-xl lg:text-2xl font-bold uppercase break-words w-full max-w-full xs:px-2 xs:w-full xs:max-w-full"
           style={{
@@ -48,10 +48,10 @@ const TeamLocationSection = () => {
             textTransform: "uppercase",
           }}
         >
-          We’re always on the lookout for brilliant minds and bold ideas.
-           Check out our vacancies and apply for the one that suits you best!
+          We’re always on the lookout for brilliant minds and bold ideas.Check out our vacancies and apply for the one that suits you best!
+           
         </p>
-        <div className="pl-2 sm:pl-4 md:pl-8 lg:pl-10">
+        <div className="pl-2 sm:pl-4 md:pl-8 lg:pl-10 mt-10">
           <Link href="/careers">
             <button className="bg-white text-black text-[14px] sm:text-[16px] md:text-[18px] lg:text-[22px] px-4 sm:px-6 md:px-10 lg:px-12 py-2 sm:py-3 pl-2 sm:pl-4 md:pl-8 lg:pl-12 hover:scale-105 transition-transform duration-300  font-medium mt-4  max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg">
               Join the Team
