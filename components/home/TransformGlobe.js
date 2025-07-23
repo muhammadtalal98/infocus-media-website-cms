@@ -13,7 +13,7 @@ const TransformGlobe = () => {
     useEffect(() => {
       const video = videoRef.current;
       const section = sectionRef.current;
-      if (!video || !section) return;
+      if (!video || !section || typeof window === 'undefined') return;
   
       video.pause();
 

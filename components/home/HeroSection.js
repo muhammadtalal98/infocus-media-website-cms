@@ -14,7 +14,7 @@ export default function HeroSection() {
     const section = sectionRef.current;
     const text = textRef.current;
 
-    if (!section || !text) return;
+    if (!section || !text || typeof window === 'undefined') return;
 
     // Only run GSAP on large screens
     if (window.innerWidth < 1024) return;

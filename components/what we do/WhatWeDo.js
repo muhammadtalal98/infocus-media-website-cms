@@ -54,6 +54,8 @@ const WhatWeDo = () => {
   ];
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+
     const updateColumnCount = () => {
       const grid = gridRef.current;
       if (grid) {
