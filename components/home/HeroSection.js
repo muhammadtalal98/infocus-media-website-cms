@@ -58,7 +58,7 @@ export default function HeroSection() {
       {/* Background Video (Large Screens Only) */}
       <video
         className="absolute inset-0 z-0 w-full h-full object-cover hidden lg:block"
-        src="/media15.mp4"
+        src="/final2.mp4"
         autoPlay
         loop
         muted
