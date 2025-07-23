@@ -68,7 +68,7 @@ const TopSection = () => {
         {/* Scroll-controlled video */}
         <video
           ref={videoRef}
-          src="/Final1.mp4"
+          src="/final2.mp4"
           className="absolute inset-0 w-full h-full object-cover"
           muted
           playsInline
