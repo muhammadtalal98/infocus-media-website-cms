@@ -9,11 +9,11 @@ const HeroSection = () => {
         </div>
 
 
-        <div className='md:w-1/2 flex flex-col justify-end'>
-            <h1 className='text-xl font-semibold text-[18px] md:text-[20px] lg:text-[22px] uppercase sub-heading'>we’re always on the lookout for brilliant minds and bold ideas. check out our vacancies and apply for the one that suits you best!</h1>
+        <div className='md:w-1/2  flex flex-col justify-end'>
+            <h1 className='text-xl font-semibold text-[18px] md:text-[20px] sm:text-[18px] lg:text-[22px] uppercase sub-heading'>we’re always on the lookout for brilliant minds and bold ideas. check out our vacancies and apply for the one that suits you best!</h1>
             <div className="text-left mt-10">
           <a href="https://www.linkedin.com/company/infocusmediaae/" target="_blank" rel="noopener noreferrer">
-          <button className="bg-black text-white px-6 py-3 cursor-pointer hover:scale-105 transition-transform duration-300 rounded-md font-medium text-[16px] md:text-[18px] lg:text-[22px]">
+          <button className="bg-black text-white px-6 py-3 cursor-pointer hover:scale-105 hover:bg-gray-200 hover:text-black transition-transform duration-300 rounded-md font-medium text-[16px] md:text-[18px] lg:text-[22px]">
             Join the Team
           </button>
           </a>

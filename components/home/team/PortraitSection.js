@@ -49,7 +49,7 @@ const SheikhCaseStudiesContainer = () => {
       </div>
 
       {/* Sticky Portrait Section */}
-      <div className="sticky sm:top-0 sm:min-h-[400vh] lg:min-h-[130vh] w-full -z-10 ">
+      <div className="sticky sm:top-0 sm:min-h-[400vh] lg:min-h-[60vh] w-full z-10  min-h-[20vh]  ">
         <div className="w-full h-full flex flex-col-reverse lg:flex-row lg:items-center  gap-10 bg-white">
           <div className="w-full md:w-1/2 md:h-full h-auto flex items-left justify-start">
             <img
@@ -118,6 +118,8 @@ const SheikhCaseStudiesContainer = () => {
           <CaseStudies />
         </div>
       </div>
+
+      
     </section>
   );
 };

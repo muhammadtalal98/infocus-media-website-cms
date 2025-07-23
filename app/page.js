@@ -19,7 +19,7 @@ export default function Home() {
   
 
   return (
-    <div className="w-full">
+    <div className="relative w-full ">
       
       <HeroSection/>
      
@@ -30,20 +30,22 @@ export default function Home() {
       {/* <ExpertiseSection/> */}
       {/* <CaseStudies/> */}
 
-      <div className="relative">
+     
         <SheikhCaseStudiesContainer />
-      </div>
-
-
-      <div className="relative">
-        <TransformGlobe/>
-
-      </div>
+      
 
       
-      <div className="relative">
+        
+     
+     
+        <TransformGlobe/>
+
+      
+
+      
+      {/* <div className="relative">
         <InsightGlobe/>
-      </div>
+      </div> */}
       
       
       <TeamSection/>

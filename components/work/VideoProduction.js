@@ -54,7 +54,7 @@ const VideoProduction = () => {
         <div className='flex justify-center items-center mt-10'>
         <button
           onClick={handleToggle}
-          className="bg-black text-white px-6 py-3 cursor-pointer hover:scale-105 transition-transform duration-300 rounded-md font-medium text-[16px] md:text-[18px] lg:text-[22px]"
+          className="bg-black text-white px-6 py-3 ccursor-pointer hover:bg-gray-200 hover:text-black hover:scale-105 transition-transform duration-300 rounded-md font-medium text-[16px] md:text-[18px] lg:text-[22px]"
         >
           {visibleCount >= data.length ? 'See Less' : 'See More!'}
         </button>

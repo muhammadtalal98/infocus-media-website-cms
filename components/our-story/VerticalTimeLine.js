@@ -44,7 +44,7 @@ const VerticalTimeLine = () => {
   };
 
   return (
-    <div className="block lg:hidden w-full bg-white px-4 md:px-8 py-20">
+    <div className="block lg:hidden w-full bg-[#FAFAFA] px-4 md:px-8 py-20">
       
 
       <div ref={timelineRef} className="flex flex-col ">

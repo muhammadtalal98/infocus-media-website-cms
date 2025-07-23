@@ -102,7 +102,7 @@ const Clients = () => {
           );
         })}
         <div className="text-center w-full h-full items-center justify-center mt-17">
-        <Link href={"/contacts"} className="bg-black text-white px-2 py-3 text-xs md:px-6 md:py-3 cursor-pointer hover:bg-gray-500 hover:text-black hover:scale-105 transition-transform duration-300 rounded-md md:font-medium text-[16px] md:text-[18px] lg:text-[22px]">
+        <Link href={"/contacts"} className="bg-black text-white px-2 py-3 text-xs md:px-6 md:py-3 cursor-pointer hover:bg-gray-200 hover:text-black hover:scale-105 transition-transform duration-300 rounded-md md:font-medium text-[16px] md:text-[18px] lg:text-[22px]">
           Join Them
         </Link>
       </div>

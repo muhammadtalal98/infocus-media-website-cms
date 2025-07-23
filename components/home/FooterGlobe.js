@@ -26,7 +26,7 @@ const FooterGlobe = () => {
         ease: "none",
         scrollTrigger: {
           trigger: section,
-          start: "top 70%",   // Start when section is 30% in viewport
+          start: "top 50%",   // Start when section is 30% in viewport
           end: "top 10%",     // End quickly for a snappy effect
           scrub: 0.5,
           // pin: true,       // Uncomment if you want to pin the section
@@ -52,11 +52,12 @@ const FooterGlobe = () => {
       {/* Video background */}
       <video
         ref={videoRef}
-        src="/bloc-short.mp4"
+        src="/Blob2.mp4"
         className="absolute inset-0 w-full h-full object-cover"
         muted
         playsInline
         preload="auto"
+        
         style={{ willChange: 'transform' }}
       />
 
@@ -71,7 +72,7 @@ const FooterGlobe = () => {
           <h1 className="text-[60px] md:text-[100px] font-bold mb-2">together!</h1>
         </div>
         <div className="text-center mt-4">
-          <Link href="/contacts" className="bg-black text-[16px] md:text-[18px] lg:text-[22px] text-white px-4 py-2 cursor-pointer hover:scale-105 transition-transform duration-300 rounded-md font-medium inline-block">
+          <Link href="/contacts" className="bg-black text-[16px] md:text-[18px] lg:text-[22px] text-white px-4 py-2 cursor-pointer hover:bg-gray-200 hover:text-black hover:scale-105 transition-transform duration-300 rounded-md font-medium inline-block">
             let's Go
           </Link>
         </div>

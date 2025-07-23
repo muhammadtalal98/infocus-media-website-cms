@@ -9,10 +9,13 @@ import React from 'react'
 
 const page = () => {
   return (
-    <div className="w-full">
+    <div className="relative">
       <HeroSection/>
       <BuilderSection/>
-      <TimeLine/>
+      <div className="relative bg-[#FAFAFA]">
+
+       <TimeLine/>
+      </div>
       <VerticalTimeLine/>
       <OpportunitySection/>
       <FooterGlobe/>

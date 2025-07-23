@@ -55,18 +55,40 @@ const TimeLine = () => {
   const lastActiveIndex = timelineData.map((d) => d.active).lastIndexOf(true);
 
   return (
+    <div >
+      {/* ✅ Static Paragraph (kept outside scroll-animated container) */}
+  {/* <div className="flex flex-col gap-0 mt-4 md:mt-2  px-4 md:px-8 bg-[#FAFAFA]">
+    <h2 className=" font-bold text-[16px] md:text-[18px] lg:text-[22px] text-black leading-tight uppercase">
+      Our approach to planning is proactive and reflective, as we
+      continuously assess ourselves and cultivate a cohesive team that
+      embraces technological advancements.
+    </h2>
+
+    <p className="text-black text-[16px] md:text-[18px] lg:text-[22px] leading-tight">
+      We confront challenges with resilience and creativity, believing
+      that healthy competition propels us forward and shapes us into our
+      best selves. Together, we are not just building an exceptional team;
+      we are crafting a legacy of success, forging a pathway rich with
+      achievements and inspiring stories that uplift us all.
+    </p>
+  </div> */}
+
+  
     <div
       ref={containerRef}
-      className="hidden lg:block relative w-full bg-white overflow-hidden px-4 md:px-8 py-20"
+      className="hidden lg:block relative w-full bg-[#FAFAFA] overflow-hidden px-4 md:px-8 py-20"
     >
-      <div ref={timelineRef} className="flex min-w-max">
+      
+      <div ref={timelineRef} className="flex min-w-max">l
         {timelineData.map((item, index) => {
           const isLastActive = index === lastActiveIndex;
           const isColored = getItemColorProgress(index);
           const isLast = index === timelineData.length - 1;
 
           return (
+            
             <div
+            
               key={index}
               ref={isLast ? lastItemRef : null}
               className="flex flex-col items-center min-w-[250px]"
@@ -119,7 +141,7 @@ const TimeLine = () => {
       </div>
     </div>
 
-
+</div>
     
   
   );
