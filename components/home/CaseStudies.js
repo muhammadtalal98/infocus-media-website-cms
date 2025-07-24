@@ -67,7 +67,7 @@ const CaseStudies = () => {
           {data.slice(0, 3).map((item, index) => (
             <motion.div 
               key={index} 
-              className="flex flex-col w-full lg:w-[500px] " // Set fixed width
+              className="flex flex-col w-full lg:w-[568px]  md:w-[688px] sm:w-[342]" // Set fixed width
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}

@@ -53,7 +53,7 @@ export default function HeroSection() {
   return (
     <div
       ref={sectionRef}
-      className="relative w-screen min-h-screen overflow-hidden"
+      className="relative w-screen lg:w-screen md:w-[768px] sm:w-[390px] min-h-screen overflow-hidden"
     >
       {/* Background Video (Large Screens Only) */}
       <video
@@ -116,20 +116,20 @@ export default function HeroSection() {
       </div>
 
       {/* md Screens */}
-      <div className="hidden md:flex lg:hidden min-h-[220vh] py-10 bg-white flex-col justify-start">
+      <div className="hidden md:flex md:w-[688] lg:hidden min-h-[220vh] md:pl-[10px] py-10 bg-white flex-col justify-start">
         <div className="mt-[46vh] flex justify-center">
           <h1 className="text-[55vw] font-bold text-black rotate-90 leading-none">
-            Infocus Media <span className="text-[3vw] align-super">®</span>
+            Infocus Media <span className="text-[10vw] align-super">®</span>
           </h1>
         </div>
       </div>
 
       {/* sm Screens */}
-      <div className="md:hidden min-h-[340vh]  bg-white flex flex-col justify-start">
+      <div className="md:hidden w-full sm:w-[390px] sm:pt-[10px] min-h-[370vh] bg-white flex flex-col justify-start">
         <div className="mt-[65vh] flex justify-center">
           <div className="transform rotate-90 origin-center -translate-y-[-144vw]">
             <h1 className="text-[100vw] font-bold text-black whitespace-nowrap">
-              Infocus Media <span className="text-[15vw] align-super">®</span>
+              Infocus Media <span className="text-[50vw] align-super">®</span>
             </h1>
           </div>
         </div>

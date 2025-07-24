@@ -54,7 +54,7 @@ const FooterGlobe = () => {
         ref={videoRef}
         src="/Blob2.mp4"
         className="absolute inset-0 w-full h-full object-cover"
-        muted
+        play
         playsInline
         preload="auto"
         

@@ -5,7 +5,7 @@ const Location = () => {
   return (
     <section className="bg-black px-6 lg:px-16 flex flex-col lg:flex-row items-center justify-between gap-6 pt-16 md:pt-24 lg:pt-32 pb-8">
       {/* Text Section */}
-      <div className="flex-1 flex flex-col justify-between bg-white text-black px-8 w-full h-[492px] md:h-[928px] lg:max-h-[900px] lg:max-w[958]">
+      <div className="flex-1 flex flex-col justify-between bg-white text-black px-8 w-full h-900px sm:h-[492px] md:h-[616px] lg:max-h-[900px] lg:max-w[958]">
         <div className="mb-10 md:mb-4 lg:mb-20">
           <h1
             className="font-bold pl-2 sm:pl-4 md:pl-8 lg:pl-10 text-4xl sm:text-5xl md:text-6xl lg:text-7xl"

@@ -19,7 +19,7 @@ export default function Home() {
   
 
   return (
-    <div className="relative w-full ">
+    <div className="relative lg:w-full md:w-[786px] sm:w-[390px] ">
       
       <HeroSection/>
      

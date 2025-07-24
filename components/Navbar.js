@@ -345,7 +345,7 @@ const Navbar = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 1, ease: 'easeInOut' }}
-            className="fixed top-0 left-0 w-full h-screen bg-black z-40 flex items-center justify-center"
+            className="fixed top-0 left-0 w-full h-screen bg-black z-40 flex items-center justify-center lg:w-full sm:w-[390px] md:w-[768px] "
           >
             <AnimatePresence>
               {menuOpen && (
@@ -358,7 +358,7 @@ const Navbar = () => {
                     delay: 0.5,
                     ease: 'easeInOut'
                   }}
-                  className="flex flex-col items-center justify-center gap-2 text-2xl sm:text-3xl md:text-5xl font-bold"
+                  className="flex flex-col items-center justify-center gap-2 text-2xl sm:text-3xl md:text-5xl font-bold "
                 >
                   {menuItems.map((item, index) => (
                     <Link
@@ -386,7 +386,7 @@ const Navbar = () => {
       {/* Navbar */}
       <nav
         ref={navbarRef}
-        className="fixed top-0 left-0 w-full sm:h-48px sm:w-342px z-50 px-4 sm:px-6 py-2 sm:py-4 flex items-center justify-between transition-all bg-transparent"
+        className="fixed top-60px left-0 w-full  sm:h-[48px] z-50 px-4 sm:px-6 py-2 sm:py-4 flex items-center justify-between transition-all bg-transparent"
       >
         {/* Logo with ref */}
         <div ref={logoRef} className="w-24 sm:w-32 md:w-48 lg:w-60 transition-colors duration-200">

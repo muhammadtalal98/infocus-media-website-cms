@@ -59,7 +59,7 @@ const TopSection = () => {
   }, []);
 
   return (
-    <div className="relative w-full">
+    <div className="relative w-full ">
       <section
         ref={sectionRef}
         className="relative h-screen bg-white overflow-hidden"

@@ -17,10 +17,10 @@ const Page = () => {
       <p className='py-20 text-center text-[40px] md:text-[64px] lg:text-[64px] font-bold'>Our Works</p>
 
       {/* Tabs */}
-      <div className='flex flex-wrap items-center justify-center gap-4 sm:w-full'>
+      <div className='flex flex-wrap items-center justify-center gap-4 sm:w-[342] sm:h-[168] md:w-[688px] md:gap-[12px] md:pl-[40] md:h-[124px]'>
         <button
           onClick={() => setActiveTab("Video Production")}
-          className={`cursor-pointer rounded-md text-[18px] md:text-[20px] lg:text-[22px] px-4 py-2 hover:bg-black hover:text-white ${activeTab === "Video Production" ? "bg-black text-white" : "text-gray-700 bg-gray-200"}`}
+          className={`cursor-pointer rounded-md text-[18px] md:text-[20px] lg:text-[22px] px-4 py-2 sm:px-5 hover:bg-black hover:text-white ${activeTab === "Video Production" ? "bg-black text-white" : "text-gray-700 bg-gray-200"}`}
         >
           Video Production
         </button>
