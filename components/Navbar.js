@@ -41,8 +41,10 @@ const Navbar = () => {
   const lastValueRef = useRef(null);
   const valueHistoryRef = useRef([]);
   const intervalRef = useRef(null);
-  const lastScrollY = useRef(0);
-  const lastScrollTime = useRef(Date.now());
+
+  const lastScrollY = useRef(typeof window !== 'undefined' ? window.scrollY : 0);
+  const lastScrollTime = useRef(typeof window !== 'undefined' ? Date.now() : 0);
+
   const scrollVelocity = useRef(0);
   const scrollTimeout = useRef(null);
   const rafId = useRef(null);

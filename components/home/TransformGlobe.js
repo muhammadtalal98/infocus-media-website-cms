@@ -5,41 +5,49 @@ import Link from "next/link";
 
 const TransformGlobe = () => {
   const videoRef = useRef(null);
-  const sectionRef = useRef(null);
-  const [showInsightContent, setShowInsightContent] = useState(false);
+    const sectionRef = useRef(null);
+  
+    useEffect(() => {
+      const video = videoRef.current;
+      const section = sectionRef.current;
+      if (!video || !section || typeof window === 'undefined') return;
+  
+      video.pause();
 
-  useEffect(() => {
-    const video = videoRef.current;
-    const section = sectionRef.current;
-    if (!video || !section) return;
+      let lastScrollY = window.scrollY;
+      let ticking = false;
+      let lastTimestamp = performance.now();
+      let scrollTimeout;
+  
+      const handleScroll = () => {
+        if (!ticking) {
+          requestAnimationFrame((timestamp) => {
+        const rect = section.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+        const sectionHeight = rect.height;
+  
+            // Only play if section is in view
+            if (
+              rect.top < windowHeight &&
+              rect.bottom > 0
+            ) {
+              // Calculate scroll speed
+              const scrollDelta = Math.abs(window.scrollY - lastScrollY);
+              const timeDelta = timestamp - lastTimestamp;
+              lastScrollY = window.scrollY;
+              lastTimestamp = timestamp;
 
-    video.pause();
+              // Map scroll speed to playbackRate (min 0.5, max 2)
+              let playbackRate = Math.min(2, Math.max(1, scrollDelta / (timeDelta / 16)));
+              video.playbackRate = playbackRate;
+              video.play();
 
-    let lastScrollY = window.scrollY;
-    let lastTimestamp = performance.now();
-    let ticking = false;
-    let scrollTimeout;
-
-    const handleScroll = () => {
-      if (!ticking) {
-        requestAnimationFrame((timestamp) => {
-          const rect = section.getBoundingClientRect();
-          const windowHeight = window.innerHeight;
-
-          if (rect.top < windowHeight && rect.bottom > 0) {
-            // Calculate scroll speed and playback rate
-            const scrollDelta = Math.abs(window.scrollY - lastScrollY);
-            const timeDelta = timestamp - lastTimestamp;
-            lastScrollY = window.scrollY;
-            lastTimestamp = timestamp;
-
-            const playbackRate = Math.min(2, Math.max(0.5, scrollDelta / (timeDelta / 16)));
-            video.playbackRate = playbackRate;
-            video.play();
-
-            // Pause if no scroll
-            clearTimeout(scrollTimeout);
-            scrollTimeout = setTimeout(() => {
+              // Pause video if no scroll for 150ms
+              clearTimeout(scrollTimeout);
+              scrollTimeout = setTimeout(() => {
+                video.pause();
+              }, 150);
+            } else {
               video.pause();
             }, 150);
 
